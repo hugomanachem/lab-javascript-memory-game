@@ -45,19 +45,30 @@ window.addEventListener('load', (event) => {
   document.querySelectorAll('.card').forEach((card) => {
     card.addEventListener('click', () => {
       // TODO: write some code here
-      memoryGame.pickedCards.push(card);
-      if (memoryGame.pickedCards.length === 1) {
+      
+      if (memoryGame.pickedCards.length < 2) {
+        memoryGame.pickedCards.push(card);
         card.setAttribute('class', 'card turned');
-      } else if (memoryGame.pickedCards.length === 2) {
-        let result = memoryGame.checkIfPair(memoryGame.pickedCards[0], memoryGame.pickedCards[1]);
-        if (result === true) {
+      } 
+
+      if (memoryGame.pickedCards.length === 2) {
+        console.log(memoryGame.pickedCards[0])
+        let card1 = memoryGame.pickedCards[0].getAttribute("data-card-name")
+        let card2 = memoryGame.pickedCards[1].getAttribute('data-card-name')
+
+        let result = memoryGame.checkIfPair(card1, card2);
+        console.log(result)
+        if (result) {
           memoryGame.pickedCards[0].setAttribute('class', 'card turned');
           memoryGame.pickedCards[1].setAttribute('class', 'card turned');
+          memoryGame.checkIfFinished()
           memoryGame.pickedCards = [];
         } else {
-          memoryGame.pickedCards[0].setAttribute('class', 'card');
-          memoryGame.pickedCards[1].setAttribute('class', 'card');
-          //memoryGame.pickedCards = [];
+          memoryGame.pickedCards[0].classList.remove("turned")
+          memoryGame.pickedCards[1].classList.remove("turned")
+          memoryGame.checkIfFinished()
+          memoryGame.pickedCards = [];
+          
         }
       } 
       console.log(`Card clicked: ${card}`);
